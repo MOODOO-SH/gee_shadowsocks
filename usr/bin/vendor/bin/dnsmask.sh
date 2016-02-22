@@ -129,7 +129,7 @@ EOF
     
 #    echo -gfw_list > /proc/nf_salist/control
 
-    echo `date +%Y-%m-%d-%H:%M:%S`" 生成gfw_list " >> /tmp/ss-redir.log
+    echo `date +%Y-%m-%d-%H:%M:%S`" 生成GFW_list " >> /tmp/ss-redir.log
 
     if [ ! -f /tmp/vendor/gfwlist-00.conf ]; then
         sed -i 's/^[ \t]*//;s/[ \t]*$//' /usr/bin/vendor/config/gfw_list.conf

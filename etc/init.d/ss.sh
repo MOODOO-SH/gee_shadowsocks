@@ -1,5 +1,4 @@
 #!/bin/sh  /etc/rc.common
-# Copyright (C) 2014-2099 SanLiuHuo
 START=99
 STOP=99
 
@@ -60,7 +59,7 @@ ss_iptables_add() {
 ss_iptables_del() {
      echo `date +%Y-%m-%d-%H:%M:%S`" 停止DNSMASK和PDNSD " >> /tmp/ss-redir.log
     /usr/bin/vendor/bin/dnsmask.sh stop
-    echo `date +%Y-%m-%d-%H:%M:%S`" 清除iptables ss主规则  " >> /tmp/ss-redir.log
+    echo `date +%Y-%m-%d-%H:%M:%S`" 清除iptables Shadowsocks主规则  " >> /tmp/ss-redir.log
     iptables -t nat -D PREROUTING -i br-lan -j $appname 1>/dev/null 2>&1
     iptables -t nat -F $appname 1>/dev/null 2>&1
     iptables -t nat -X $appname 1>/dev/null 2>&1
@@ -81,26 +80,26 @@ ss_getconfig
 start() {
     insmod ipt_REDIRECT 2>/dev/null
     touch /tmp/ss-redir.error
-    echo `date +%Y-%m-%d-%H:%M:%S`" 开始启动SS " >> /tmp/ss-redir.log
+    echo `date +%Y-%m-%d-%H:%M:%S`" 开始启动rixCloud " >> /tmp/ss-redir.log
 
     CreatSsConfigFile
-    echo `date +%Y-%m-%d-%H:%M:%S`" 启动SS主程序 " >> /tmp/ss-redir.log
+    echo `date +%Y-%m-%d-%H:%M:%S`" 启动rixCloud主程序 " >> /tmp/ss-redir.log
     /usr/bin/vendor/bin/ss-redir -c /usr/bin/vendor/config/shadowsocks.json -f /var/run/shadowsocks.pid
     echo `date +%Y-%m-%d-%H:%M:%S`" 添加iptables规则 " >> /tmp/ss-redir.log
     ss_iptables_add
        
-    echo `date +%Y-%m-%d-%H:%M:%S`" SS启动完成 " >> /tmp/ss-redir.log
+    echo `date +%Y-%m-%d-%H:%M:%S`" rixCloud 启动完成 " >> /tmp/ss-redir.log
     echo "----------------------------------------------------------------------" >> /tmp/ss-redir.log
 }
 
 stop() {
-	echo `date +%Y-%m-%d-%H:%M:%S`" 开始停止SS " >> /tmp/ss-redir.log
+	echo `date +%Y-%m-%d-%H:%M:%S`" 开始停止rixCloud " >> /tmp/ss-redir.log
 	echo `date +%Y-%m-%d-%H:%M:%S`" 删除iptables规则 " >> /tmp/ss-redir.log
 	ss_iptables_del 1>/dev/null 2>&1
  	echo `date +%Y-%m-%d-%H:%M:%S`" 删除相关配置文件 " >> /tmp/ss-redir.log	
 	rm -rf /usr/bin/vendor/config/shadowsocks.json
 	
-	echo `date +%Y-%m-%d-%H:%M:%S`" 停止SS主程序 " >> /tmp/ss-redir.log
+	echo `date +%Y-%m-%d-%H:%M:%S`" 停止rixCloud主程序 " >> /tmp/ss-redir.log
 	if [ -f /var/run/shadowsocks.pid ]; then 
 		kill -9 `cat /var/run/shadowsocks.pid`                                                                                             
 	        rm -f /var/run/shadowsocks.pid                                                                                                     
@@ -108,7 +107,7 @@ stop() {
 	kill -9 `ps | grep "/usr/bin/vendor/bin/ss-redir -c /usr/bin/vendor/config/shadowsocks.json" | grep -v grep | awk '{print $1}'` 1>/dev/null 2>&1
 
 	
-	echo `date +%Y-%m-%d-%H:%M:%S`" 停止SS 完毕 " >> /tmp/ss-redir.log
+	echo `date +%Y-%m-%d-%H:%M:%S`" 停止Shadowsocks完毕 " >> /tmp/ss-redir.log
 }
 
 	

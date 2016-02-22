@@ -1,5 +1,5 @@
 <%
--- @author FlashSoft
+-- @Author Shadowsocks
 local ss_config = luci.sys.exec("uci show ss-redir | sed 's/ss-redir\\.\\(.*\\)\\.\\(.*\\)=\\(.*\\)/ss_redir[\"\\1\"][\"\\2\"]=\"\\3\";/g' | sed 's/ss-redir\\.\\(.*\\)=.*/ss_redir[\"\\1\"]={};/g'")
 local ss_state = luci.sys.exec('if [ "`ps | grep /usr/bin/vendor/bin/ss-redir | grep -c -v grep`" == "1" ]; then echo -n "start";  else echo -n "stop"; fi;')
 local ss_enable = luci.sys.exec("if [ -L /etc/rc.d/S99ss.sh ]; then echo -n true;else echo -n false;fi")
@@ -55,14 +55,14 @@ local ss_enable = luci.sys.exec("if [ -L /etc/rc.d/S99ss.sh ]; then echo -n true
 	<script type="text/javascript" src="<%=resource%>/web/js/artDialog/jquery.artDialog.js?skin=blueskin"></script>
 	<script src="<%=resource%>/web/js/artDialog/plugins/iframeTools.source.js?v=7455"></script>
 	<script>
-	// SeryoVPN配置表
+	// rixCloud 云加速
 	var ss_redir = [];
 	<%=ss_config%>
 	ss_redir["ssgoabroad"] = ss_redir["ssgoabroad"]? ss_redir["ssgoabroad"]: {};
 
-	// SeryoVPN状态
+	// rixCloud 状态
 	var ss_state = '<%=ss_state%>';
-	// SeryoVPN是否开启为开机启动
+	// rixCloud 是否开启为开机启动
 	var ss_enable = <%=ss_enable%>;
 	</script>
 </head>
@@ -81,7 +81,7 @@ local ss_enable = luci.sys.exec("if [ -L /etc/rc.d/S99ss.sh ]; then echo -n true
 			<div id="update" class="alert alert-success" style="display:none;"></div>
 			<table class="table">
 				<thead>
-					<tr><th colspan="2">SeryoVPN服务器信息</th></tr>
+					<tr><th colspan="2">rixCloud 节点信息</th></tr>
 				</thead>
 				<tbody>
 					<tr>
@@ -91,20 +91,20 @@ local ss_enable = luci.sys.exec("if [ -L /etc/rc.d/S99ss.sh ]; then echo -n true
 						</td>
 					</tr>
 					<tr>
-						<td class="td_left">名称</td>
-						<td class="td_right"><input class="form-input" data-input="true" name="ss_server_des" placeholder="服务器的别名"/></td>
+						<td class="td_left">节点名称</td>
+						<td class="td_right"><input class="form-input" data-input="true" name="ss_server_des" placeholder="rixCloud China 云加速 服务器别名"/></td>
 					</tr>
 					<tr>
-						<td class="td_left">地址</td>
-						<td class="td_right"><input class="form-input" data-input="true" name="ss_server_ip" placeholder="SeryoVPN的服务器地址"/></td>
+						<td class="td_left"> rixCloud</td>
+						<td class="td_right"><input class="form-input" data-input="true" name="ss_server_ip" placeholder="rixCloud China 云加速 服务器地址"/></td>
 					</tr>
 					<tr>
 						<td class="td_left">端口</td>
-						<td class="td_right"><input class="form-input" data-input="true" name="ss_server_port" placeholder="SeryoVPN的连接端口"/></td>
+						<td class="td_right"><input class="form-input" data-input="true" name="ss_server_port" placeholder="rixCloud China 云加速 连接端口"/></td>
 					</tr
 					<tr>
 						<td class="td_left">密码</td>
-						<td class="td_right"><input class="form-input" data-input="true" name="ss_password" placeholder="SeryoVPN的连接密码" type="password"/></td>
+						<td class="td_right"><input class="form-input" data-input="true" name="ss_password" placeholder="rixCloud China 云加速 连接密码" type="password"/></td>
 					</tr>
 					<tr>
 						<td class="td_left">加密方式</td>
@@ -134,16 +134,16 @@ local ss_enable = luci.sys.exec("if [ -L /etc/rc.d/S99ss.sh ]; then echo -n true
 						<td class="td_left">模式</td>
 						<td class="td_right">
 							<select name="ss_mode" data-input="true" class="form-input input_height">
-								<option value="part">智能模式</option>
+								<option value="part">国外IP模式</option>
 	                    		<option value="whole">全局模式</option>
 			    				<option value="game">游戏模式</option>
 	                    		<option value="china">回国模式</option>
-								<option value="exact">GFWList模式</option>
+								<option value="exact">最小流量模式</option>
 	                    	</select>
 						</td>
 					</tr>
 					<tr>
-						<td class="td_left">加速DNS</td>
+						<td class="td_left">远程DNS</td>
 						<td class="td_right">
 							<select name="dns_server_ip" data-input="true" class="form-input input_height">
 			                    <option value="8.8.4.4">谷歌</option>
@@ -151,15 +151,15 @@ local ss_enable = luci.sys.exec("if [ -L /etc/rc.d/S99ss.sh ]; then echo -n true
 			                    <option value="168.95.1.1">台湾</option>
 			                    <option value="218.102.23.228">香港</option>
 			                    <option value="168.126.63.1">韩国</option>
-			                    <option value="208.67.222.222">openDns</option>
+			                    <option value="208.67.222.222">OpenDNS</option>
 					    		<option value="128.199.248.105">新加坡</option>
 					    		<option value="212.50.131.153">芬兰</option>
-									<option value="74.82.42.42">HE.NET</option>
+								<option value="74.82.42.42">HE.NET</option>
 		            	    </select>
 						</td>
 					</tr>
 					<tr>
-						<td class="td_left">服务状态</td>
+						<td class="td_left">状态</td>
 						<td class="td_right">
 							<label class="state-label"><em></em><span></span></label><span class="state-server"></span><a data-type="submit" data-act="stop" href="javascript:;">停止</a>
 						</td>
@@ -167,7 +167,7 @@ local ss_enable = luci.sys.exec("if [ -L /etc/rc.d/S99ss.sh ]; then echo -n true
 				</tbody>
 				<tbody>
 					<tr>
-						<td class="td_left">服务器管理</td>
+						<td class="td_left">管理</td>
 						<td class="td_right">
 							<button class="btn" data-type="submit" data-act="add">添加</button><button class="btn" data-type="submit" data-act="del">删除</button><button class="btn" data-type="submit" data-act="save">保存</button><button class="btn" data-type="submit" data-act="auto">一键启用</button>
 						</td>
@@ -177,11 +177,11 @@ local ss_enable = luci.sys.exec("if [ -L /etc/rc.d/S99ss.sh ]; then echo -n true
 
 			<table class="table gap">
 				<thead>
-					<tr><th colspan="2">高级设置</th></tr>
+					<tr><th colspan="2"> rixCloud 云加速高级设置</th></tr>
 				</thead>
 				<tbody>
-					<tr><td>白名单&nbsp;<a href="ss_ajax?act=system_white_list" target="_blank">系统内置</a></td><td>黑名单</td></tr>
-					<tr><td><textarea class="form-input" data-type="white_list" placeholder=“走SeryoVPN的域名列表” rows="10"></textarea></td><td><textarea class="form-input" data-type="black_list" placeholder=“不走SeryoVPN的域名列表” rows="10"></textarea></td></tr>
+					<tr><td>白名单&nbsp;<a href="ss_ajax?act=system_white_list" target="_blank">rixCloud 内置</a></td><td>黑名单</td></tr>
+					<tr><td><textarea class="form-input" data-type="white_list" placeholder=“强制通过rixCloud云加速的域名列表” rows="10"></textarea></td><td><textarea class="form-input" data-type="black_list" placeholder=“不通过rixCloud 云加速的域名列表” rows="10"></textarea></td></tr>
 					<tr>
 						<td>
 							<button class="btn" data-type="whitelist_btn">保存白名单</button>
@@ -192,13 +192,13 @@ local ss_enable = luci.sys.exec("if [ -L /etc/rc.d/S99ss.sh ]; then echo -n true
 					</tr>
 					<tr><td colspan="2"></td></tr>
 					<tr><td>MAC黑名单</td><td>预留</td></tr>
-					<tr><td><textarea class="form-input" data-type="black_mac_list" placeholder=“不走SeryoVPN的MAC列表(格式为00:15:C5:16:09:A3)” rows="10"></textarea></td><td><textarea class="form-input" data-type="xxxx" placeholder=“预留” rows="10"></textarea></td></tr>
+					<tr><td><textarea class="form-input" data-type="black_mac_list" placeholder=“不通过rixCloud云加速的MAC列表(格式为00:15:C5:16:09:A3)” rows="10"></textarea></td><td><textarea class="form-input" data-type="xxxx" placeholder=“预留” rows="10"></textarea></td></tr>
 					<tr>
 						<td>
 							<button class="btn" data-type="blackmaclist_btn">保存MAC黑名单</button>
 						</td>
 						<td>
-							<button class="btn" data-type="xxxx_btn">预留</button>
+							<button class="btn" data-type="xxxx_btn">rixCloud 预留项目</button>
 						</td>
 					</tr>
 				</tbody>
@@ -206,7 +206,7 @@ local ss_enable = luci.sys.exec("if [ -L /etc/rc.d/S99ss.sh ]; then echo -n true
 			<div>
 				<table class="table gap speed-table">
 					<thead>
-						<tr><th colspan="5">服务器测速</th></tr>
+						<tr><th colspan="5">rixCloud 节点测速</th></tr>
 					</thead>
 					<tfoot>
 						<tr>
@@ -219,7 +219,7 @@ local ss_enable = luci.sys.exec("if [ -L /etc/rc.d/S99ss.sh ]; then echo -n true
 				</table>
 			</div>
 
-			<div class="copyright">Version: <script>document.write(ss_redir["ssgoabroad"] && ss_redir["ssgoabroad"]["ss_version"] || '未知');</script> Created by: <a href="https://www.seryovpn.com" target="_blank">SeryoVPN</a> Modified by: <a href="https://doc.seryovpn.com" target="_blank">SeryoVPN Support</a></div>
+			<div class="copyright">Version: <script>document.write(ss_redir["ssgoabroad"] && ss_redir["ssgoabroad"]["ss_version"] || '未知');</script></div>
 		</div>
 	</div>
 	<script>
@@ -288,7 +288,7 @@ local ss_enable = luci.sys.exec("if [ -L /etc/rc.d/S99ss.sh ]; then echo -n true
 					// 表单变量
 					data['act'] = act;
 					data['ss_server_index'] = new_index;
-					data['ss_server_des'] = '新建服务器';
+					data['ss_server_des'] = '新建rixCloud';
 
 					// 本地配置
 					ss_redir[new_index] = data;
@@ -333,7 +333,7 @@ local ss_enable = luci.sys.exec("if [ -L /etc/rc.d/S99ss.sh ]; then echo -n true
 				case 'auto':
 
 					if($('.form-input[data-input][value!=""]').length != $('.form-input[data-input]').length) {
-						alert('服务器信息不完整');
+						alert('rixCloud信息不完整');
 						return;
 					}
 
@@ -565,9 +565,9 @@ local ss_enable = luci.sys.exec("if [ -L /etc/rc.d/S99ss.sh ]; then echo -n true
 			}
 			speedTesting.testSpeed(1, index, function (data) {
 				if(data.info && data.info.split(' ')[3] > 0) {
-					$('.state-server').html('<span style="color:#5cb85c;">连接正常</span>');
+					$('.state-server').html('<span style="color:#5cb85c;">rixCloud已连接</span>');
 				}else{
-					$('.state-server').html('<span style="color:#f0ad4e;">连接异常</span>');
+					$('.state-server').html('<span style="color:#f0ad4e;">rixCloud异常</span>');
 				}
 			}, true);
 		}
@@ -707,12 +707,12 @@ local ss_enable = luci.sys.exec("if [ -L /etc/rc.d/S99ss.sh ]; then echo -n true
 					'url': 'http://www.baidu.com'
 				},
 				{
-					'name': 'youtube',
-					'url': 'https://www.youtube.com/'
+					'name': 'YouTube',
+					'url': 'https://www.youtube.com'
 				},
 				{
-					'name': 'SeryoVPN',
-					'url': 'https://www.seryovpn.com'
+					'name': 'Facebook',
+					'url': 'https://www.facebook.com'
 				}
 			],
 			'testSpeed': function (col, index, next, final) {
@@ -777,7 +777,7 @@ local ss_enable = luci.sys.exec("if [ -L /etc/rc.d/S99ss.sh ]; then echo -n true
 					$('.speed-table [data-index=' + index + '] [data-index] td[class!=label]').replaceWith(speedTesting.getTD('等待', 3));
 				}
 				else{
-					$('.speed-table .description').html('切换回原服务器');
+					$('.speed-table .description').html('切换回原节点器');
 				}
 				$.ajax({
 					// 'url': 'ss_ajax?act=cpu',
@@ -785,7 +785,7 @@ local ss_enable = luci.sys.exec("if [ -L /etc/rc.d/S99ss.sh ]; then echo -n true
 					'data': {'index': index},
 					'dataType': 'html',
 					'success': function (data) {
-						$('.speed-table .description').html('切换服务成功');
+						$('.speed-table .description').html('切换节点成功');
 						if(final){
 							next();
 							return;
@@ -824,7 +824,7 @@ local ss_enable = luci.sys.exec("if [ -L /etc/rc.d/S99ss.sh ]; then echo -n true
 					}
 					else{
 						// console.log('switchTo', 'end', index, curr_index);
-						$('.speed-table .description').html('切换回原服务器');
+						$('.speed-table .description').html('切换回原节点');
 						if(index - 1 == curr_index) {// 最后的配置跟正在运行配置相同
 							$('.speed-table .description').html('');
 							$('[data-type=bench]').attr('disabled', false).removeClass('disabled');

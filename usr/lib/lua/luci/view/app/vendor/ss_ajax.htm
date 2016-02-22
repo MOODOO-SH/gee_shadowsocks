@@ -1,5 +1,5 @@
 <%
--- @author FlashSoft
+-- @Author Shadowsocks
 local request_uri = luci.http.getenv('REQUEST_URI')
 local act = luci.http.formvalue('act')
 local json = ''
@@ -174,7 +174,7 @@ action = {
 	end,
 	-- 更新信息
 	['update'] = function()
-		local update = luci.sys.exec('curl http://3liuhuo.tk/hiwifi/Donation_SS_version')
+		local update = luci.sys.exec('curl http://geetool.seryox.com/geetool/2.0/rixCloudVersion')
 		json = update
 	end
 }
